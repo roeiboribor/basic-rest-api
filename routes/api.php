@@ -18,9 +18,11 @@ Route::get('/user', function (Request $request) {
 */
 
 Route::post('register', [V1\Auth\RegisterController::class, 'store']);
-// Route::post('login', [V1\AuthenticatedController::class, 'store']);
+Route::post('login', [V1\Auth\LoginController::class, 'store']);
 
-// Route::group(['middleware' => ['auth:api']], function () {
-//     Route::get('profile', [V1\ProfileController::class, 'profile']);
-//     Route::post('logout', [V1\AuthenticatedController::class, 'destroy'])->name('logout');
-// });
+Route::group(['middleware' => ['auth:api']], function () {
+    Route::get('/profile', function (Request $request) {
+        return $request->user();
+    });
+    Route::delete('logout', [V1\Auth\LoginController::class, 'destroy']);
+});
