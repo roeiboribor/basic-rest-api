@@ -31,8 +31,9 @@ class LoginController extends Controller
         }
 
         return response()->json([
-            'message' => $data['message'] ?? null,
             'token' => $data['token'] ?? null,
+            'user' => auth()->user(),
+            'message' => $data['message'] ?? null,
         ]);
     }
 
