@@ -22,7 +22,7 @@ class LoginController extends Controller
 
         try {
             if (auth()->attempt($credentials)) {
-                $accessToken = auth()->user()->createToken('LaravelAuthApp')->accessToken;
+                $accessToken = auth()->user()->createToken('authToken')->accessToken;
                 return response()->json(['user' => auth()->user(), 'access_token' => $accessToken]);
             }
         } catch (\Exception $err) {
