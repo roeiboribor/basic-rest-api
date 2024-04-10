@@ -18,23 +18,18 @@ class LoginController extends Controller
     public function store(LoginUserRequest $request): JsonResponse
     {
         // Passed Validation / Validated
-        $data = $request->validated();
+        $credentials = $request->validated();
 
         try {
-            if (auth()->attempt($data)) {
-                $data['message'] = "You have successfully logged in!";
-                $data['token'] = auth()->user()->createToken('LaravelAuthApp')->accessToken;
+            if (auth()->attempt($credentials)) {
+                $accessToken = auth()->user()->createToken('LaravelAuthApp')->accessToken;
+                return response()->json(['user' => auth()->user(), 'access_token' => $accessToken]);
             }
         } catch (\Exception $err) {
             \Log::error("Error: Login user details. " . $err->getMessage());
-            $data['message'] = 'Oopps Something went wrong!';
         }
 
-        return response()->json([
-            'token' => $data['token'] ?? null,
-            'user' => auth()->user(),
-            'message' => $data['message'] ?? null,
-        ]);
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 
     /**
