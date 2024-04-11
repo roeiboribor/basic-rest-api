@@ -23,13 +23,13 @@ class LoginController extends Controller
         try {
             if (auth()->attempt($credentials)) {
                 $accessToken = auth()->user()->createToken('authToken')->accessToken;
-                return response()->json(['user' => auth()->user(), 'access_token' => $accessToken]);
+                return response()->json(['user' => auth()->user(), 'token' => $accessToken]);
             }
         } catch (\Exception $err) {
             \Log::error("Error: Login user details. " . $err->getMessage());
         }
 
-        return response()->json(['error' => 'Unauthorized'], 401);
+        return response()->json(['error' => 'Forbidden'], 403);
     }
 
     /**
