@@ -24,6 +24,8 @@ class LoginController extends Controller
             if (auth()->attempt($credentials)) {
                 $accessToken = auth()->user()->createToken('authToken')->accessToken;
                 return response()->json(['user' => auth()->user(), 'token' => $accessToken]);
+            } else {
+                return response()->json(['error' => 'Invalid Credentials']);
             }
         } catch (\Exception $err) {
             \Log::error("Error: Login user details. " . $err->getMessage());
